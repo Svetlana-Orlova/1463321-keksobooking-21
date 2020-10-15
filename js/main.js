@@ -14,7 +14,6 @@ const map = document.querySelector(`.map`);
 const mapWidth = document.querySelector(`.map`).clientWidth;
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPinTemplate = document.querySelector(`.map__pins`);
-const fragment = document.createDocumentFragment();
 
 function getArrayOfAds() {
   function getRandom(min, max) {
@@ -42,7 +41,7 @@ function getArrayOfAds() {
     ad.location.y = getRandom(MIN_Y, MAX_Y);
 
     arrayOfAds.push(ad);
-  };
+  }
   return arrayOfAds;
 }
 
@@ -53,7 +52,7 @@ function insertPins(ads) {
     pinElement.querySelector(`img`).alt = ad.offer.title;
     pinElement.style = `left:` + (ad.location.x - PIN_WIDTH / 2) + `px;` + `top:` + (ad.location.y - PIN_HEIGHT) + `px;`;
     return pinElement;
-  };
+  }
 
   let pins = document.createDocumentFragment();
   for (let i = 0; i < ads.length; i++) {
@@ -61,7 +60,7 @@ function insertPins(ads) {
     pins.appendChild(pin);
   }
   mapPinTemplate.appendChild(pins);
-};
+}
 
 const arrayOfAds = getArrayOfAds();
 insertPins(arrayOfAds);
