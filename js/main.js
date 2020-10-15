@@ -14,10 +14,7 @@ const map = document.querySelector(`.map`);
 const mapWidth = document.querySelector(`.map`).clientWidth;
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPinTemplate = document.querySelector(`.map__pins`);
-const mapFiltersContainer = map.querySelector(`.map__filters-container`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const fragment = document.createDocumentFragment();
-const template = document.querySelector(`#card`).content.querySelector(`.popup__photo`);
 
 function getArrayOfAds() {
   function getRandom(min, max) {
