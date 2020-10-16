@@ -13,7 +13,7 @@ const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0
 const map = document.querySelector(`.map`);
 const mapWidth = document.querySelector(`.map`).clientWidth;
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapPinTemplate = document.querySelector(`.map__pins`);
+const containerPinTemplate = document.querySelector(`.map__pins`);
 
 function getArrayOfAds() {
   function getRandom(min, max) {
@@ -22,18 +22,23 @@ function getArrayOfAds() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  function getRandomElement(list) {
+    let randomElement = list[Math.floor(Math.random() * list.length)];
+    return randomElement;
+  }
+
   let arrayOfAds = [];
   for (let i = 0; i < QUANTITY; i++) {
     let ad = {author: {}, offer: {}, location: {}};
     ad.author.avatar = `img/avatars/user` + `0` + (i + 1) + `.png`;
     ad.offer.title = `Заголовок`;
-    ad.offer.adress = getRandom(0, mapWidth) + ` , ` + getRandom(MIN_Y, MAX_Y);
+    ad.offer.address = getRandom(0, mapWidth) + ` , ` + getRandom(MIN_Y, MAX_Y);
     ad.offer.price = `350`;
-    ad.offer.type = TYPES[Math.floor(Math.random() * TYPES.length)];
+    ad.offer.type = getRandomElement(TYPES);
     ad.offer.rooms = 2;
     ad.offer.guests = 3;
-    ad.offer.checkin = CHECKINS[Math.floor(Math.random() * CHECKINS.length)];
-    ad.offer.checkout = CHECKOUT[Math.floor(Math.random() * CHECKOUT.length)];
+    ad.offer.checkin = getRandomElement(CHECKINS);
+    ad.offer.checkout = getRandomElement(CHECKOUT);
     ad.offer.features = FEATURES.slice(0, getRandom(1, FEATURES.length));
     ad.offer.description = `Описание`;
     ad.offer.photos = PHOTOS.slice(0, getRandom(1, PHOTOS.length));
@@ -59,9 +64,9 @@ function insertPins(ads) {
     const pin = createPin(ads[i]);
     pins.appendChild(pin);
   }
-  mapPinTemplate.appendChild(pins);
+  containerPinTemplate.appendChild(pins);
 }
 
-const arrayOfAds = getArrayOfAds();
-insertPins(arrayOfAds);
+const listOfAds = getArrayOfAds();
+insertPins(listOfAds);
 map.classList.remove(`map--faded`);
