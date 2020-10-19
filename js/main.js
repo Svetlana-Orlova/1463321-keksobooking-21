@@ -42,10 +42,10 @@ function getArrayOfAds() {
     ad.author.avatar = `img/avatars/user` + `0` + (i + 1) + `.png`;
     ad.offer.title = `Заголовок`;
     ad.offer.address = getRandom(0, mapWidth) + ` , ` + getRandom(MIN_Y, MAX_Y);
-    ad.offer.price = getRandom(500, 50000);
+    ad.offer.price = `350`;
     ad.offer.type = getRandomElement(TYPES);
-    ad.offer.rooms = getRandom(0, 10);
-    ad.offer.guests = getRandom(1, 100);
+    ad.offer.rooms = 2;
+    ad.offer.guests = 3;
     ad.offer.checkin = getRandomElement(CHECKINS);
     ad.offer.checkout = getRandomElement(CHECKOUT);
     ad.offer.features = FEATURES.slice(0, getRandom(1, FEATURES.length));
@@ -60,7 +60,6 @@ function getArrayOfAds() {
 }
 
 function insertPins(ads) {
-
   function createPin(ad) {
     const pinElement = pinTemplate.cloneNode(true);
     pinElement.querySelector(`img`).src = ad.author.avatar;
@@ -70,7 +69,6 @@ function insertPins(ads) {
   }
 
   let pins = document.createDocumentFragment();
-
   for (let i = 0; i < ads.length; i++) {
     const pin = createPin(ads[i]);
     pins.appendChild(pin);
