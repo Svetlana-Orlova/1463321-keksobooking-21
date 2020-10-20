@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Светлана Орлова](https://up.htmlacademy.ru/javascript/21/user/1463321).
-* Наставник: [Александр Бабченко](https://htmlacademy.ru/profile/babtshe).
+* Наставник: [Бабченко Александр](https://htmlacademy.ru/profile/babtshe).
 
 ---
 
