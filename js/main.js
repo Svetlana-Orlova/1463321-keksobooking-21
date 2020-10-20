@@ -87,32 +87,32 @@ function insertCard(cardInfo) {
       let imgTemplate = photoTemplate.cloneNode(true);
       imgTemplate.src = photo;
       fragment.appendChild(imgTemplate);
-    })
+    });
     return fragment;
   }
 
   function getCapacityText(rooms, guests) {
-    var result = '';
+    let result = ``;
     if (rooms === 0) {
-      result = 'Комнаты ';
-    };
+      result = `Комнаты `;
+    }
     if (rooms === 1 || rooms === 21) {
-      result = rooms + ' комната ';
-    };
+      result = rooms + ` комната `;
+    }
     if (rooms > 1 && rooms < 5 || rooms > 21 && rooms < 25) {
-      result = rooms + ' комнаты ';
+      result = rooms + ` комнаты `;
     } else {
-      result = rooms + ' комнат ';
-    };
+      result = rooms + ` комнат `;
+    }
 
     if (guests === 0) {
-      result += 'без гостей';
-    };
+      result += `без гостей`;
+    }
     if (guests === 1 || guests === 21) {
-      result += 'для ' + guests + ' гостя.';
+      result += `для ` + guests + ` гостя.`;
     } else {
-      result += 'для ' + guests + ' гостей.';
-    };
+      result += `для ` + guests + ` гостей.`;
+    }
 
     return result;
   }
