@@ -78,7 +78,7 @@ function insertPins(ads) {
 
 function insertCard(cardInfo) {
 
-  function returnCardImages(photos) {
+  function getCardImages(photos) {
     let fragment = document.createDocumentFragment();
 
     photos.forEach(function (photo) {
@@ -94,10 +94,10 @@ function insertCard(cardInfo) {
     if (rooms === 0) {
       result = `Комнаты `;
     }
-    if (rooms === 1 || rooms === 21) {
+    if (rooms % 10 === 1 && rooms % 100 !== 11) {
       result = rooms + ` комната `;
     }
-    if (rooms > 1 && rooms < 5 || rooms > 21 && rooms < 25) {
+    if (rooms % 10 > 1 && rooms % 10 < 5 && rooms % 100 !== 12 && rooms % 100 !== 13 && rooms % 100 !== 14) {
       result = rooms + ` комнаты `;
     } else {
       result = rooms + ` комнат `;
@@ -106,7 +106,7 @@ function insertCard(cardInfo) {
     if (guests === 0) {
       result += `без гостей`;
     }
-    if (guests === 1 || guests === 21) {
+    if (guests % 10 === 1 && guests % 100 !== 11) {
       result += `для ` + guests + ` гостя.`;
     } else {
       result += `для ` + guests + ` гостей.`;
@@ -129,7 +129,7 @@ function insertCard(cardInfo) {
     cardElement.querySelector(`.popup__description`).textContent = ad.offer.description;
     cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
     cardElement.querySelector(`.popup__type`).textContent = OFFER_TYPES[ad.offer.type];
-    cardElement.querySelector(`.popup__photos`).appendChild(returnCardImages(ad.offer.photos));
+    cardElement.querySelector(`.popup__photos`).appendChild(getCardImages(ad.offer.photos));
 
     return cardElement;
   }
