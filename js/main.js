@@ -151,13 +151,13 @@ const listOfAds = getArrayOfAds();
 
 // insertCard(listOfAds[0]); временно отрисовка карточек не нужна
 
-function disabledElement(element) {
+function disableElement(element) {
   for (let i = 0; i < element.length; i++) {
     element[i].setAttribute(`disabled`, true);
   }
 }
 
-function abledElement(element) {
+function ableElement(element) {
   document.querySelector(`.map`).classList.remove(`map--faded`);
   for (let i = 0; i < element.length; i++) {
     element[i].removeAttribute(`disabled`);
@@ -177,18 +177,18 @@ function fillAddress(element) {
 }
 
 fillAddress(mainPin);
-disabledElement(fieldsets);
+disableElement(fieldsets);
 
 mainPin.addEventListener(`mousedown`, function (evt) {
   if (evt.button === 0) {
-    abledElement(fieldsets);
+    ableElement(fieldsets);
     fillAddress(mainPin);
   }
 });
 
 mainPin.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
-    abledElement(fieldsets);
+    ableElement(fieldsets);
     fillAddress(mainPin);
   }
 });
