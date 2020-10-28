@@ -4,6 +4,8 @@ const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 const MIN_Y = 130;
 const MAX_Y = 630;
+const PRIMARY_MOUSE_BUTTON = 0;
+const ROOMS_NOT_FOR_GUESTS = 100;
 const QUANTITY = 8;
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
 const CHECKINS = [`12:00`, `13:00`, `14:00`];
@@ -27,12 +29,30 @@ const priceElement = advertFormElement.querySelector(`#price`);
 const typeFieldElement = advertFormElement.querySelector(`#type`);
 const checkInFieldElement = advertFormElement.querySelector(`#timein`);
 const checkOutFieldElement = advertFormElement.querySelector(`#timeout`);
-// const OFFER_TYPES = {
-//   flat: `Квартира`,
-//   house: `Дом`,
-//   palace: `Дворец`,
-//   bungalow: `Бунгало`
-// }; Нужен для карточек, которые мы в этом задании не отрисовываем
+const OFFER_TYPES = {
+  flat: {
+    minPrice: '1000',
+    text: 'Квартира'
+  },
+  house: {
+    minPrice: '5000',
+    text: 'Дом'
+  },
+  palace: {
+    minPrice: '10000',
+    text: 'Дворец'
+  },
+  bungalow: {
+    minPrice: '0',
+    text: 'Бунгало'
+  }
+};
+const roomValidityMessage = {
+  1: `1 комната — для 1 гостя`,
+  2: `2 комнаты — для 2 гостей или для 1 гостя`,
+  3: `3 комнаты — для 3 гостей, или для 2 гостей, или для 1 гостя`,
+  100: `100 комнат — не для гостей`
+};
 
 function getArrayOfAds() {
   function getRandom(min, max) {
@@ -151,24 +171,24 @@ const listOfAds = getArrayOfAds();
 
 // insertCard(listOfAds[0]); временно отрисовка карточек не нужна
 
-function disableItem(item) {
-  for (let i = 0; i < item.length; i++) {
-    item[i].setAttribute(`disabled`, true);
+function disableItems(items) {
+  for (let i = 0; i < items.length; i++) {
+    items[i].setAttribute(`disabled`, true);
   }
 }
 
-function ableItem(item) {
+function enableItems(items) {
   mapElement.classList.remove(`map--faded`);
-  for (let i = 0; i < item.length; i++) {
-    item[i].removeAttribute(`disabled`);
+  for (let i = 0; i < items.length; i++) {
+    items[i].removeAttribute(`disabled`);
   }
   advertFormElement.classList.remove(`ad-form--disabled`);
   insertPins(listOfAds);
 }
 
 function fillAddress(item) {
-  let addressX = item.style.left;
-  let addressY = item.style.top;
+  const addressX = item.style.left;
+  const addressY = item.style.top;
   if (advertFormElement.classList.contains(`ad-form--disabled`)) {
     addressInputElement.value = `${parseInt(addressX, 10) + PIN_WIDTH / 2 }, ${parseInt(addressY, 10) + PIN_HEIGHT / 2}`;
   } else {
@@ -177,98 +197,56 @@ function fillAddress(item) {
 }
 
 fillAddress(mainPinElement);
-disableItem(fieldsetElements);
+disableItems(fieldsetElements);
 
-mainPinElement.addEventListener(`mousedown`, function (evt) {
-  if (evt.button === 0) {
-    ableItem(fieldsetElements);
+function onPageActivate(evt) {
+  if (evt.button === PRIMARY_MOUSE_BUTTON || evt.key === `Enter`) {
+    enableItems(fieldsetElements);
     fillAddress(mainPinElement);
   }
+}
+
+mainPinElement.addEventListener(`mousedown`, function (evt) {
+  onPageActivate(evt);
 });
 
 mainPinElement.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
-    ableItem(fieldsetElements);
-    fillAddress(mainPinElement);
-  }
+  onPageActivate(evt);
 });
 
-function getMinPrice() {
-  if (typeFieldElement.value === `bungalow`) {
-    priceElement.min = 0;
-    priceElement.placeholder = `0`;
-  } else if (typeFieldElement.value === `flat`) {
-    priceElement.min = 1000;
-    priceElement.placeholder = `1000`;
-  } else if (typeFieldElement.value === `house`) {
-    priceElement.min = 5000;
-    priceElement.placeholder = `5000`;
-  } else if (typeFieldElement.value === `palace`) {
-    priceElement.min = 10000;
-    priceElement.placeholder = `10000`;
-  }
+function checkMinPrice () {
+  priceElement.setAttribute('min', OFFER_TYPES[typeFieldElement.value].minPrice);
+  priceElement.setAttribute('placeholder', OFFER_TYPES[typeFieldElement.value].minPrice);
 }
 
-getMinPrice();
-typeFieldElement.addEventListener(`input`, getMinPrice);
-
+checkMinPrice ();
+typeFieldElement.addEventListener(`input`, checkMinPrice);
 
 function checkValidationCapacity() {
-  let roomValue = roomQuantityElement.value;
-  let guestValue = guestQuantityElement.value;
-  if (roomValue === `1`) {
-    if (guestValue === `1`) {
-      guestQuantityElement.setCustomValidity(``);
-    } else {
-      guestQuantityElement.setCustomValidity(`1 комната для 1 гостя`);
-    }
-  } else if (roomValue === `2`) {
-    if (guestValue === `1` || guestValue === `2`) {
-      guestQuantityElement.setCustomValidity(``);
-    } else {
-      guestQuantityElement.setCustomValidity(`2 комнаты для 2 гостей или для 1 гостя`);
-    }
-  } else if (roomValue === `3`) {
-    if (guestValue === `1` || guestValue === `2` || guestValue === `3`) {
-      guestQuantityElement.setCustomValidity(``);
-    } else {
-      guestQuantityElement.setCustomValidity(`3 комнаты для 3 гостей, или для 2 гостей, или для 1 гостя`);
-    }
-  } else if (roomValue === `100`) {
-    if (guestValue === `0`) {
-      guestQuantityElement.setCustomValidity(``);
-    } else {
-      guestQuantityElement.setCustomValidity(`100 комнат не для гостей`);
-    }
+  const guests = guestQuantityElement.value;
+  const rooms = roomQuantityElement.value;
+
+  if ((rooms === ROOMS_NOT_FOR_GUESTS && guests !== 0) || (rooms !== ROOMS_NOT_FOR_GUESTS && (guests < 1 || guests > rooms))) {
+    guestQuantityElement.setCustomValidity(roomValidityMessage[rooms]);
+  } else {
+    guestQuantityElement.setCustomValidity(``);
   }
-}
+  guestQuantityElement.reportValidity();
+};
 
 checkValidationCapacity();
 roomQuantityElement.addEventListener(`change`, checkValidationCapacity);
 guestQuantityElement.addEventListener(`change`, checkValidationCapacity);
 
-function setCheckInAndCheckOut(evt) {
+function onCheckInAndCheckOutChange(evt) {
   const target = evt.target;
-  let connectedSelect;
 
   if (target === checkInFieldElement) {
-    connectedSelect = checkOutFieldElement;
-  } else {
-    connectedSelect = checkInFieldElement;
-  }
-
-  switch (target.value) {
-    case `12:00`:
-      connectedSelect.value = `12:00`;
-      break;
-    case `13:00`:
-      connectedSelect.value = `13:00`;
-      break;
-    case `14:00`:
-      connectedSelect.value = `14:00`;
-      break;
-  }
+    checkOutFieldElement.value = checkInFieldElement.value;
+  } else if (target === checkOutFieldElement) {
+    checkInFieldElement.value = checkOutFieldElement.value;
+  };
 }
 
-checkInFieldElement.addEventListener(`change`, setCheckInAndCheckOut);
-checkOutFieldElement.addEventListener(`change`, setCheckInAndCheckOut);
+checkInFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
+checkOutFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
