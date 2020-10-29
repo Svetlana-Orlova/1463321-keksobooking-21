@@ -31,20 +31,20 @@ const checkInFieldElement = advertFormElement.querySelector(`#timein`);
 const checkOutFieldElement = advertFormElement.querySelector(`#timeout`);
 const OFFER_TYPES = {
   flat: {
-    minPrice: '1000',
-    text: 'Квартира'
+    minPrice: `1000`,
+    text: `Квартира`
   },
   house: {
-    minPrice: '5000',
-    text: 'Дом'
+    minPrice: `5000`,
+    text: `Дом`
   },
   palace: {
-    minPrice: '10000',
-    text: 'Дворец'
+    minPrice: `10000`,
+    text: `Дворец`
   },
   bungalow: {
-    minPrice: '0',
-    text: 'Бунгало'
+    minPrice: `0`,
+    text: `Бунгало`
   }
 };
 const roomValidityMessage = {
@@ -206,20 +206,15 @@ function onPageActivate(evt) {
   }
 }
 
-mainPinElement.addEventListener(`mousedown`, function (evt) {
-  onPageActivate(evt);
-});
+mainPinElement.addEventListener(`mousedown`, onPageActivate);
+mainPinElement.addEventListener(`keydown`, onPageActivate);
 
-mainPinElement.addEventListener(`keydown`, function (evt) {
-  onPageActivate(evt);
-});
-
-function checkMinPrice () {
-  priceElement.setAttribute('min', OFFER_TYPES[typeFieldElement.value].minPrice);
-  priceElement.setAttribute('placeholder', OFFER_TYPES[typeFieldElement.value].minPrice);
+function checkMinPrice() {
+  priceElement.setAttribute(`min`, OFFER_TYPES[typeFieldElement.value].minPrice);
+  priceElement.setAttribute(`placeholder`, OFFER_TYPES[typeFieldElement.value].minPrice);
 }
 
-checkMinPrice ();
+checkMinPrice();
 typeFieldElement.addEventListener(`input`, checkMinPrice);
 
 function checkValidationCapacity() {
@@ -232,7 +227,7 @@ function checkValidationCapacity() {
     guestQuantityElement.setCustomValidity(``);
   }
   guestQuantityElement.reportValidity();
-};
+}
 
 checkValidationCapacity();
 roomQuantityElement.addEventListener(`change`, checkValidationCapacity);
@@ -245,7 +240,7 @@ function onCheckInAndCheckOutChange(evt) {
     checkOutFieldElement.value = checkInFieldElement.value;
   } else if (target === checkOutFieldElement) {
     checkInFieldElement.value = checkOutFieldElement.value;
-  };
+  }
 }
 
 checkInFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
