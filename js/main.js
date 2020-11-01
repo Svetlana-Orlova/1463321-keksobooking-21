@@ -104,7 +104,6 @@ function insertPins(ads) {
     pin.querySelector(`img`).src = ad.author.avatar;
     pin.querySelector(`img`).alt = ad.offer.title;
     pin.style = `left:` + (ad.location.x - PIN_WIDTH / 2) + `px;` + `top:` + (ad.location.y - PIN_HEIGHT) + `px;`;
-
     return pin;
   }
 
@@ -216,6 +215,27 @@ function callSelectedCard(offers) {
   };
 }
 
+function disablePin() {
+  const activePinElement = containerPinTemplateElement.querySelector(`.map__pin--active`);
+  if (activePinElement) {
+    activePinElement.classList.remove(`map__pin--active`);
+  }
+}
+
+function onPinClick(evt) {
+  let pin;
+  if (evt.target.matches(`.map__pin:not(.map__pin--active):not(.map__pin--main)`)) {
+    pin = evt.target;
+    disablePin();
+  } else if (evt.target.parentElement.matches(`.map__pin:not(.map__pin--active):not(.map__pin--main)`)) {
+    pin = evt.target.parentElement;
+    disablePin();
+  } else {
+    return;
+  }
+  pin.classList.add(`map__pin--active`);
+}
+
 function disableItems(items) {
   for (let i = 0; i < items.length; i++) {
     items[i].setAttribute(`disabled`, true);
@@ -248,6 +268,7 @@ function deactivatePage() {
 
   mainPinElement.addEventListener(`mousedown`, onPageActivate);
   mainPinElement.addEventListener(`keydown`, onPageActivate);
+  containerPinTemplateElement.removeEventListener(`click`, onPinClick);
 }
 
 function onPageActivate(evt) {
@@ -262,6 +283,7 @@ function onPageActivate(evt) {
     mainPinElement.removeEventListener(`keydown`, onPageActivate);
   }
   mapElement.addEventListener(`click`, callSelectedCard(offers));
+  containerPinTemplateElement.addEventListener(`click`, onPinClick);
 }
 
 deactivatePage();
@@ -275,15 +297,18 @@ checkMinPrice();
 typeFieldElement.addEventListener(`input`, checkMinPrice);
 
 function checkValidationCapacity() {
-  const guests = guestQuantityElement.value;
-  const rooms = roomQuantityElement.value;
+  const guests = +guestQuantityElement.value;
+  const rooms = +roomQuantityElement.value;
+  let result = true;
 
   if ((rooms === ROOMS_NOT_FOR_GUESTS && guests !== 0) || (rooms !== ROOMS_NOT_FOR_GUESTS && (guests < 1 || guests > rooms))) {
     guestQuantityElement.setCustomValidity(roomValidityMessage[rooms]);
+    result = false;
   } else {
     guestQuantityElement.setCustomValidity(``);
   }
   guestQuantityElement.reportValidity();
+  return result;
 }
 
 checkValidationCapacity();
