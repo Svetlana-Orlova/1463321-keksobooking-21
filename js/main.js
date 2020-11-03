@@ -198,23 +198,6 @@ function onEscCloseCard(evt) {
   }
 }
 
-function callSelectedCard(offers) {
-  return function (evt) {
-    if (evt.target.parentNode.classList.contains(`map__pin`)) {
-      const offerId = evt.target.parentNode.dataset.offerId;
-      if (offerId) {
-        removeCards();
-        const card = createCard(offers[offerId]);
-        mapElement.insertBefore(card, filtersContainerElement);
-
-        const buttonPopupCloseElement = document.querySelector(`button.popup__close`);
-        buttonPopupCloseElement.addEventListener(`click`, closeCard);
-        document.addEventListener(`keydown`, onEscCloseCard);
-      }
-    }
-  };
-}
-
 function disablePin() {
   const activePinElement = containerPinTemplateElement.querySelector(`.map__pin--active`);
   if (activePinElement) {
@@ -281,9 +264,41 @@ function onPageActivate(evt) {
 
     mainPinElement.removeEventListener(`mousedown`, onPageActivate);
     mainPinElement.removeEventListener(`keydown`, onPageActivate);
+
+    mapElement.addEventListener(`click`, showSelectedCard(offers));
+    containerPinTemplateElement.addEventListener(`click`, onPinClick);
+
+    const collection = document.querySelectorAll(`button.map__pin:not(.map__pin--main)`);
+    for (let i = 0; i < collection.length; i++) {
+      collection[i].addEventListener(`click`, showSelectedCard(offers));
+      collection[i].addEventListener(`keyup`, onEnterShowCard);
+    }
   }
-  mapElement.addEventListener(`click`, callSelectedCard(offers));
-  containerPinTemplateElement.addEventListener(`click`, onPinClick);
+}
+
+function showSelectedCard(ads) {
+  return function (evt) {
+    let adId;
+    if (evt.target.classList.contains(`map__pin`)) {
+      adId = evt.target.dataset.offerId;
+    } else if (evt.target.parentNode.classList.contains(`map__pin`)) {
+      adId = evt.target.parentNode.dataset.offerId;
+    }
+
+    removeCards();
+    const card = createCard(ads[adId]);
+    mapElement.insertBefore(card, filtersContainerElement);
+
+    const buttonPopupCloseElement = document.querySelector(`button.popup__close`);
+    buttonPopupCloseElement.addEventListener(`click`, closeCard);
+    document.addEventListener(`keydown`, onEscCloseCard);
+  };
+}
+
+function onEnterShowCard(evt) {
+  if (evt.key === `Enter`) {
+    showSelectedCard();
+  }
 }
 
 deactivatePage();
