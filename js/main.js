@@ -99,10 +99,10 @@ function insertPins() {
   const mapPins = getArrayOfAds();
 
   function getPins(ads) {
+    const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
     const pins = document.createDocumentFragment();
 
     ads.forEach((ad) => {
-      const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
       const pin = pinTemplate.cloneNode(true);
       const img = pin.querySelector(`img`);
 
@@ -190,6 +190,7 @@ function getCard(ad) {
 
   popupClose.addEventListener(`click`, function () {
     cardElement.remove();
+    disablePin();
   });
 
   return cardElement;
@@ -205,6 +206,7 @@ function removeCard() {
   const currentCard = document.querySelector(`.map__card`);
   if (currentCard) {
     currentCard.remove();
+    disablePin();
   }
 }
 
