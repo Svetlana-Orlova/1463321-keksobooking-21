@@ -71,7 +71,7 @@
 
     popupClose.addEventListener(`click`, function () {
       cardElement.remove();
-      window.pin.disablePin();
+      window.pin.disable();
     });
 
     return cardElement;
@@ -87,7 +87,6 @@
     const currentCard = document.querySelector(`.map__card`);
     if (currentCard) {
       currentCard.remove();
-      window.pin.disablePin();
     }
   }
 
@@ -104,7 +103,8 @@
   }
 
   window.card = {
-    getCard,
-    createCard
+    get: getCard,
+    create: createCard,
+    close: onEscCloseCard
   };
 })();

@@ -10,9 +10,35 @@
   const checkInFieldElement = advertFormElement.querySelector(`#timein`);
   const checkOutFieldElement = advertFormElement.querySelector(`#timeout`);
 
+  const OFFER_TYPES = {
+    flat: {
+      minPrice: `1000`,
+      text: `Квартира`
+    },
+    house: {
+      minPrice: `5000`,
+      text: `Дом`
+    },
+    palace: {
+      minPrice: `10000`,
+      text: `Дворец`
+    },
+    bungalow: {
+      minPrice: `0`,
+      text: `Бунгало`
+    }
+  };
+
+  const roomValidityMessage = {
+    1: `1 комната — для 1 гостя`,
+    2: `2 комнаты — для 2 гостей или для 1 гостя`,
+    3: `3 комнаты — для 3 гостей, или для 2 гостей, или для 1 гостя`,
+    100: `100 комнат — не для гостей`
+  };
+
   function checkMinPrice() {
-    priceElement.setAttribute(`min`, window.data.offerTypes[typeFieldElement.value].minPrice);
-    priceElement.setAttribute(`placeholder`, window.data.offerTypes[typeFieldElement.value].minPrice);
+    priceElement.setAttribute(`min`, OFFER_TYPES[typeFieldElement.value].minPrice);
+    priceElement.setAttribute(`placeholder`, OFFER_TYPES[typeFieldElement.value].minPrice);
   }
 
   function checkValidationCapacity() {
@@ -21,7 +47,7 @@
     let result = true;
 
     if ((rooms === ROOMS_NOT_FOR_GUESTS && guests !== 0) || (rooms !== ROOMS_NOT_FOR_GUESTS && (guests < 1 || guests > rooms))) {
-      guestQuantityElement.setCustomValidity(window.data.message[rooms]);
+      guestQuantityElement.setCustomValidity(roomValidityMessage[rooms]);
       result = false;
     } else {
       guestQuantityElement.setCustomValidity(``);

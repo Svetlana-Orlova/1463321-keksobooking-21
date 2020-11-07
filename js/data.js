@@ -2,7 +2,6 @@
 
 (function () {
   const QUANTITY = 8;
-  const mapWidthElement = document.querySelector(`.map`).clientWidth;
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
   const MIN_Y = 130;
@@ -11,13 +10,8 @@
   const CHECKOUT = [`12:00`, `13:00`, `14:00`];
   const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
   const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+  const mapWidthElement = document.querySelector(`.map`).clientWidth;
 
-  const roomValidityMessage = {
-    1: `1 комната — для 1 гостя`,
-    2: `2 комнаты — для 2 гостей или для 1 гостя`,
-    3: `3 комнаты — для 3 гостей, или для 2 гостей, или для 1 гостя`,
-    100: `100 комнат — не для гостей`
-  };
   const OFFER_TYPES = {
     flat: {
       minPrice: `1000`,
@@ -62,8 +56,7 @@
   }
 
   window.data = {
-    getArrayOfAds: getArrayOfAds(),
-    offerTypes: OFFER_TYPES,
-    message: roomValidityMessage
+    getArrayOfAds,
+    offerTypes: OFFER_TYPES
   };
 })();

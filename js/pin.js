@@ -7,7 +7,7 @@
   const PIN_HEIGHT = 70;
 
   function insertPins() {
-    const mapPins = window.data.getArrayOfAds;
+    const mapPins = window.data.getArrayOfAds();
 
     function getPins(ads) {
       const pins = document.createDocumentFragment();
@@ -22,10 +22,11 @@
 
         pins.append(pin);
 
-        pin.addEventListener(`click`, () => {
-          window.card.createCard(window.card.getCard(ad));
+        pin.addEventListener(`click`, function () {
+          window.card.create(window.card.get(ad));
           disablePin();
           pin.classList.add(`map__pin--active`);
+          document.addEventListener(`keydown`, onEscDisablePin);
         });
       });
 
@@ -41,9 +42,16 @@
     }
   }
 
+  function onEscDisablePin(evt) {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      disablePin();
+    }
+  }
+
   window.pin = {
-    disablePin,
-    insertPins
+    disable: disablePin,
+    insert: insertPins
   };
 
 })();

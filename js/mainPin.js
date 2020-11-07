@@ -19,81 +19,72 @@
     MAX: 630
   };
 
-  const MainPinPositionX = {
-    MIN: CoordinateX.MIN - mainPinHalfWidth,
-    MAX: CoordinateX.MAX - mainPinHalfWidth
-  };
-  const MainPinPositionY = {
-    MIN: CoordinateY.MIN - mainPinHeight,
-    MAX: CoordinateY.MAX - mainPinHeight
-  };
-
-  mainPinElement.addEventListener(`mousedown`, function (evt) {
-    evt.preventDefault();
-
-    let StartCoords = {
-      X: evt.clientX,
-      Y: evt.clientY
+  function getCoordinates() {
+    let MainPinPositionX = {
+      MIN: CoordinateX.MIN - mainPinHalfWidth,
+      MAX: CoordinateX.MAX - mainPinHalfWidth
     };
 
-    function onMouseMove(moveEvt) {
-      moveEvt.preventDefault();
+    let MainPinPositionY = {
+      MIN: CoordinateY.MIN - mainPinHeight,
+      MAX: CoordinateY.MAX - mainPinHeight
+    };
 
-      const Shift = {
-        X: StartCoords.X - moveEvt.clientX,
-        Y: StartCoords.Y - moveEvt.clientY
+    mainPinElement.addEventListener(`mousedown`, function (evt) {
+      evt.preventDefault();
+
+      let StartCoords = {
+        X: evt.clientX,
+        Y: evt.clientY
       };
 
-      StartCoords = {
-        X: moveEvt.clientX,
-        Y: moveEvt.clientY
-      };
+      function onMouseMove(moveEvt) {
+        moveEvt.preventDefault();
 
-      let mainPinY = mainPinElement.offsetTop - Shift.Y;
-      let mainPinX = mainPinElement.offsetLeft - Shift.X;
+        const Shift = {
+          X: StartCoords.X - moveEvt.clientX,
+          Y: StartCoords.Y - moveEvt.clientY
+        };
 
-      if (mainPinY <= MainPinPositionY.MIN) {
-        mainPinY = MainPinPositionY.MIN;
-      } else if (mainPinY >= MainPinPositionY.MAX) {
-        mainPinY = MainPinPositionY.MAX;
+        StartCoords = {
+          X: moveEvt.clientX,
+          Y: moveEvt.clientY
+        };
+
+        let mainPinY = mainPinElement.offsetTop - Shift.Y;
+        let mainPinX = mainPinElement.offsetLeft - Shift.X;
+
+        if (mainPinY <= MainPinPositionY.MIN) {
+          mainPinY = MainPinPositionY.MIN;
+        } else if (mainPinY >= MainPinPositionY.MAX) {
+          mainPinY = MainPinPositionY.MAX;
+        }
+
+        if (mainPinX <= MainPinPositionX.MIN) {
+          mainPinX = MainPinPositionX.MIN;
+        } else if (mainPinX >= MainPinPositionX.MAX) {
+          mainPinX = MainPinPositionX.MAX;
+        }
+
+        mainPinElement.style.top = `${mainPinY}px`;
+        mainPinElement.style.left = `${mainPinX}px`;
+
+        addressInputElement.value = `${mainPinX + mainPinHalfWidth}, ${mainPinY + mainPinHeight}`;
       }
 
-      if (mainPinX <= MainPinPositionX.MIN) {
-        mainPinX = MainPinPositionX.MIN;
-      } else if (mainPinX >= MainPinPositionX.MAX) {
-        mainPinX = MainPinPositionX.MAX;
+      function onMouseUp(upEvt) {
+        upEvt.preventDefault();
+
+        document.removeEventListener(`mousemove`, onMouseMove);
+        document.removeEventListener(`mouseup`, onMouseUp);
       }
 
-      mainPinElement.style.top = `${mainPinY}px`;
-      mainPinElement.style.left = `${mainPinX}px`;
-
-      addressInputElement.value = `${mainPinX + mainPinHalfWidth}, ${mainPinY + mainPinHeight}`;
-    }
-
-    function onMouseUp(upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener(`mousemove`, onMouseMove);
-      document.removeEventListener(`mouseup`, onMouseUp);
-    }
-
-    document.addEventListener(`mousemove`, onMouseMove);
-    document.addEventListener(`mouseup`, onMouseUp);
-  });
-
-  function fillAddress() {
-    const addressX = Math.round(parseInt(mainPinElement.style.left, 10) + mainPinElement.clientWidth / 2);
-    let addressY;
-    if (advertFormElement.classList.contains(`ad-form--disabled`)) {
-      addressY = (Math.round(parseInt(mainPinElement.style.top, 10) + mainPinElement.clientHeight / 2));
-    } else {
-      addressY = (Math.round(parseInt(mainPinElement.style.top, 10) + mainPinHeight));
-    }
-
-    addressInputElement.value = `${addressX}, ${addressY}`;
+      document.addEventListener(`mousemove`, onMouseMove);
+      document.addEventListener(`mouseup`, onMouseUp);
+    });
   }
 
   window.mainPin = {
-    fillAddress
+    move: getCoordinates
   };
 })();

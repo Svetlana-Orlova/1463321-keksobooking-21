@@ -8,16 +8,16 @@
   const advertFormElement = document.querySelector(`.ad-form`);
 
   function disableItems(items) {
-    for (let i = 0; i < items.length; i++) {
-      items[i].setAttribute(`disabled`, true);
-    }
+    items.forEach((item) => {
+      item.setAttribute(`disabled`, true);
+    });
   }
 
   function enableItems(items) {
     mapElement.classList.remove(`map--faded`);
-    for (let i = 0; i < items.length; i++) {
-      items[i].removeAttribute(`disabled`);
-    }
+    items.forEach((item) => {
+      item.removeAttribute(`disabled`);
+    });
     advertFormElement.classList.remove(`ad-form--disabled`);
   }
 
@@ -25,7 +25,7 @@
     mapElement.classList.add(`map--faded`);
     advertFormElement.classList.add(`ad-form--disabled`);
     disableItems(fieldsetElements);
-    window.mainPin.fillAddress(mainPinElement);
+    window.address.fill(mainPinElement);
 
     mainPinElement.addEventListener(`mousedown`, onPageActivate);
     mainPinElement.addEventListener(`keydown`, onPageActivate);
@@ -34,8 +34,9 @@
   function onPageActivate(evt) {
     if (evt.button === PRIMARY_MOUSE_BUTTON || evt.key === `Enter`) {
       enableItems(fieldsetElements);
-      window.mainPin.fillAddress(mainPinElement);
-      window.pin.insertPins();
+      window.mainPin.move();
+      window.address.fill(mainPinElement);
+      window.pin.insert();
 
       mainPinElement.removeEventListener(`mousedown`, onPageActivate);
       mainPinElement.removeEventListener(`keydown`, onPageActivate);
