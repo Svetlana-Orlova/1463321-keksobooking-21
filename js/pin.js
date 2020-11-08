@@ -3,12 +3,12 @@
 (function () {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const containerPinTemplateElement = document.querySelector(`.map__pins`);
+
+  const PINS_URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
 
   function insertPins() {
-    const mapPins = window.data.getArrayOfAds();
-
     function getPins(ads) {
       const pins = document.createDocumentFragment();
 
@@ -32,7 +32,13 @@
 
       return pins;
     }
-    containerPinTemplateElement.append(getPins(mapPins));
+
+    function onAdsReceived(ads) {
+      const pins = getPins(ads);
+      containerPinTemplateElement.append(pins);
+    }
+
+    window.server.load(PINS_URL, onAdsReceived);
   }
 
   function disablePin() {
