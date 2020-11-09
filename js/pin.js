@@ -1,44 +1,46 @@
 'use strict';
 
 (function () {
-  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+  const MAX_PINS = 5;
+  const pinTemplateElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const containerPinTemplateElement = document.querySelector(`.map__pins`);
 
-  const PINS_URL = `https://21.javascript.pages.academy/keksobooking/data`;
-  const PIN_WIDTH = 50;
-  const PIN_HEIGHT = 70;
+  function getPin(ad) {
+    if (!ad.offer) {
+      return;
+    }
+    const pin = pinTemplateElement.cloneNode(true);
+    const img = pin.querySelector(`img`);
 
-  function insertPins() {
-    function getPins(ads) {
-      const pins = document.createDocumentFragment();
+    pin.style = `left: ${(ad.location.x - img.width / 2)}px;` + `top: ${ad.location.y - img.height}px;`;
+    img.src = ad.author.avatar;
+    img.alt = ad.offer.title;
 
-      ads.forEach((ad) => {
-        const pin = pinTemplate.cloneNode(true);
-        const img = pin.querySelector(`img`);
+    pin.addEventListener(`click`, function () {
+      window.card.create(window.card.get(ad));
+      disablePin();
+      pin.classList.add(`map__pin--active`);
+      document.addEventListener(`keydown`, onEscDisablePin);
+    });
 
-        pin.style = `left:` + (ad.location.x - PIN_WIDTH / 2) + `px;` + `top:` + (ad.location.y - PIN_HEIGHT) + `px;`;
-        img.src = ad.author.avatar;
-        img.alt = ad.offer.title;
+    return pin;
+  }
 
-        pins.append(pin);
+  function insertPins(ads) {
+    const pins = document.createDocumentFragment();
+    let count;
 
-        pin.addEventListener(`click`, function () {
-          window.card.create(window.card.get(ad));
-          disablePin();
-          pin.classList.add(`map__pin--active`);
-          document.addEventListener(`keydown`, onEscDisablePin);
-        });
-      });
-
-      return pins;
+    if (ads.length < MAX_PINS) {
+      count = ads.length;
+    } else {
+      count = MAX_PINS;
     }
 
-    function onAdsReceived(ads) {
-      const pins = getPins(ads);
-      containerPinTemplateElement.append(pins);
+    for (let i = 0; i < count; i++) {
+      pins.appendChild(getPin(ads[i]));
     }
 
-    window.server.load(PINS_URL, onAdsReceived);
+    document.querySelector(`.map__pins`).appendChild(pins);
   }
 
   function disablePin() {
@@ -55,9 +57,17 @@
     }
   }
 
+  function removePins() {
+    const pins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pins.forEach((pin) => {
+      pin.remove();
+    });
+  }
+
   window.pin = {
     disable: disablePin,
-    insert: insertPins
+    insert: insertPins,
+    remove: removePins
   };
 
 })();

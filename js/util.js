@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  const PRIMARY_MOUSE_BUTTON = 0;
+
   function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -21,9 +23,37 @@
     return newArray;
   }
 
+  function isPrimaryMouseButtonPress(evt, action) {
+    if (evt.button === PRIMARY_MOUSE_BUTTON) {
+      action();
+    }
+  }
+
+  function isEscPress(evt, action) {
+    if (evt.key === `Escape`) {
+      action();
+    }
+  }
+
+  function isEnterPress(evt, action) {
+    if (evt.key === `Enter`) {
+      action();
+    }
+  }
+
+  function isDocumentClick(action) {
+    document.addEventListener(`click`, function () {
+      action();
+    });
+  }
+
   window.util = {
     getRandom,
     getRandomItem,
-    getRandomItems
+    getRandomItems,
+    isPrimaryMouseButtonPress,
+    isEscPress,
+    isEnterPress,
+    isDocumentClick
   };
 })();

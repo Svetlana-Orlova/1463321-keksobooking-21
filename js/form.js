@@ -9,6 +9,7 @@
   const typeFieldElement = advertFormElement.querySelector(`#type`);
   const checkInFieldElement = advertFormElement.querySelector(`#timein`);
   const checkOutFieldElement = advertFormElement.querySelector(`#timeout`);
+  const resetButtonElement = advertFormElement.querySelector(`.ad-form__reset`);
 
   const OFFER_TYPES = {
     flat: {
@@ -35,6 +36,18 @@
     3: `3 комнаты — для 3 гостей, или для 2 гостей, или для 1 гостя`,
     100: `100 комнат — не для гостей`
   };
+
+  function disableItems(items) {
+    items.forEach((item) => {
+      item.setAttribute(`disabled`, true);
+    });
+  }
+
+  function enableItems(items) {
+    items.forEach((item) => {
+      item.removeAttribute(`disabled`);
+    });
+  }
 
   function checkMinPrice() {
     priceElement.setAttribute(`min`, OFFER_TYPES[typeFieldElement.value].minPrice);
@@ -76,7 +89,34 @@
     checkOutFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
   }
 
+  function onSuccess() {
+    advertFormElement.reset();
+    window.message.success();
+    window.main.deactivatePage();
+  }
+
+  function onError() {
+    window.message.error();
+  }
+
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    window.server.upload(new FormData(advertFormElement), onSuccess, onError);
+  }
+
+  advertFormElement.addEventListener(`submit`, onFormSubmit);
+
+  resetButtonElement.addEventListener(`click`, function (evt) {
+    evt.preventDefault();
+    advertFormElement.reset();
+    window.mainPin.restart();
+    window.address.fill();
+    checkValidation();
+  });
+
   window.form = {
-    checkValidation
+    checkValidation,
+    disableItems,
+    enableItems
   };
 })();

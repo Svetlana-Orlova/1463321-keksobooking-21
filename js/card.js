@@ -27,12 +27,10 @@
   function getCapacityText(rooms, guests) {
     let result = ``;
     if (rooms === 0) {
-      result = `Комнаты `;
-    }
-    if (rooms % 10 === 1 && rooms % 100 !== 11) {
+      result = `Помещение `;
+    } else if (rooms % 10 === 1 && rooms % 100 !== 11) {
       result = rooms + ` комната `;
-    }
-    if (rooms % 10 > 1 && rooms % 10 < 5 && rooms % 100 !== 12 && rooms % 100 !== 13 && rooms % 100 !== 14) {
+    } else if (rooms % 10 > 1 && rooms % 10 < 5 && rooms % 100 !== 12 && rooms % 100 !== 13 && rooms % 100 !== 14) {
       result = rooms + ` комнаты `;
     } else {
       result = rooms + ` комнат `;
@@ -40,8 +38,7 @@
 
     if (guests === 0) {
       result += `без гостей`;
-    }
-    if (guests % 10 === 1 && guests % 100 !== 11) {
+    } else if (guests % 10 === 1 && guests % 100 !== 11) {
       result += `для ` + guests + ` гостя.`;
     } else {
       result += `для ` + guests + ` гостей.`;
@@ -123,6 +120,7 @@
   window.card = {
     get: getCard,
     create: createCard,
-    close: onEscCloseCard
+    close: onEscCloseCard,
+    hide: closeCard
   };
 })();

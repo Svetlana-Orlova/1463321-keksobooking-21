@@ -9,6 +9,11 @@
   const mainPinHeight = mainPinElement.offsetHeight + MAIN_PIN_POINTER_HEIGHT;
   const mainPinHalfWidth = Math.floor(mainPinElement.offsetWidth / 2);
 
+  const MainPinStartСoordinates = {
+    X: 375,
+    Y: 570,
+  };
+
   const CoordinateX = {
     MIN: 0,
     MAX: mapElement.offsetWidth
@@ -20,6 +25,8 @@
   };
 
   function getCoordinates() {
+    window.address.fill();
+
     let MainPinPositionX = {
       MIN: CoordinateX.MIN - mainPinHalfWidth,
       MAX: CoordinateX.MAX - mainPinHalfWidth
@@ -32,6 +39,7 @@
 
     mainPinElement.addEventListener(`mousedown`, function (evt) {
       evt.preventDefault();
+      let dragged = false;
 
       let StartCoords = {
         X: evt.clientX,
@@ -40,6 +48,9 @@
 
       function onMouseMove(moveEvt) {
         moveEvt.preventDefault();
+        window.card.hide();
+        window.pin.disable();
+        dragged = true;
 
         const Shift = {
           X: StartCoords.X - moveEvt.clientX,
@@ -54,16 +65,16 @@
         let mainPinY = mainPinElement.offsetTop - Shift.Y;
         let mainPinX = mainPinElement.offsetLeft - Shift.X;
 
-        if (mainPinY <= MainPinPositionY.MIN) {
-          mainPinY = MainPinPositionY.MIN;
-        } else if (mainPinY >= MainPinPositionY.MAX) {
-          mainPinY = MainPinPositionY.MAX;
-        }
-
         if (mainPinX <= MainPinPositionX.MIN) {
           mainPinX = MainPinPositionX.MIN;
         } else if (mainPinX >= MainPinPositionX.MAX) {
           mainPinX = MainPinPositionX.MAX;
+        }
+
+        if (mainPinY <= MainPinPositionY.MIN) {
+          mainPinY = MainPinPositionY.MIN;
+        } else if (mainPinY >= MainPinPositionY.MAX) {
+          mainPinY = MainPinPositionY.MAX;
         }
 
         mainPinElement.style.top = `${mainPinY}px`;
@@ -77,6 +88,17 @@
 
         document.removeEventListener(`mousemove`, onMouseMove);
         document.removeEventListener(`mouseup`, onMouseUp);
+
+        function onClickPreventDefault(clickEvt) {
+          clickEvt.preventDefault();
+          mainPinElement.removeEventListener(`click`, onClickPreventDefault);
+        }
+
+        if (dragged) {
+          mainPinElement.addEventListener(`click`, onClickPreventDefault);
+        }
+
+        window.address.fill();
       }
 
       document.addEventListener(`mousemove`, onMouseMove);
@@ -84,7 +106,13 @@
     });
   }
 
+  function resetMainPin() {
+    mainPinElement.style.top = `${MainPinStartСoordinates.X}px`;
+    mainPinElement.style.left = `${MainPinStartСoordinates.Y}px`;
+  }
+
   window.mainPin = {
-    move: getCoordinates
+    address: getCoordinates,
+    restart: resetMainPin
   };
 })();

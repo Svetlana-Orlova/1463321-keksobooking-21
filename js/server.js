@@ -1,7 +1,10 @@
 'use strict';
 
 (function () {
-  function loadData(url, onSuccess) {
+  const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const UPLOAD_URL = ` https://21.javascript.pages.academy/keksobooking`;
+
+  function query(method, url, data, onSuccess, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
@@ -34,27 +37,29 @@
     });
 
     xhr.addEventListener(`timeout`, function () {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+      onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
     });
 
     xhr.timeout = 4000;
-    xhr.open(`GET`, url);
-    xhr.send();
+    xhr.open(method, url);
+    if (data) {
+      xhr.send(data);
+    } else {
+      xhr.send();
+    }
   }
 
-  function onError(errorMessage) {
-    const node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `fixed`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement(`afterbegin`, node);
+  function loadData(cbSuccess, cbError) {
+    query(`GET`, LOAD_URL, null, cbSuccess, cbError);
+  }
+
+  function uploadData(data, cbSuccess, cbError) {
+    query(`POST`, UPLOAD_URL, data, cbSuccess, cbError);
   }
 
   window.server = {
-    load: loadData
+    load: loadData,
+    upload: uploadData
   };
 
 })();
