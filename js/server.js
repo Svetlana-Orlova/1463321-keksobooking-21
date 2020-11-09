@@ -3,6 +3,7 @@
 (function () {
   const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const UPLOAD_URL = ` https://21.javascript.pages.academy/keksobooking`;
+  const TIMEOUT = 4000;
 
   function query(method, url, data, onSuccess, onError) {
     const xhr = new XMLHttpRequest();
@@ -40,7 +41,7 @@
       onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
     });
 
-    xhr.timeout = 4000;
+    xhr.timeout = TIMEOUT;
     xhr.open(method, url);
     if (data) {
       xhr.send(data);

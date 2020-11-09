@@ -3,12 +3,12 @@
 (function () {
   const mainElement = document.querySelector(`main`);
   const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
-  const errorButtonElement = errorMessageTemplateElement.querySelector(`.error__button`);
+  const errorButtonElement = document.querySelector(`.error__button`);
   const successMessageTemplateElement = document.querySelector(`#success`).content.querySelector(`.success`);
 
   function errorHandler(errorMessage) {
     const node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    node.style = `z-index: 100; margin: 0 auto; min-height: 40px; text-align: center; background-color: red;`;
     node.style.position = `fixed`;
     node.style.left = 0;
     node.style.right = 0;
@@ -47,16 +47,16 @@
   }
 
   function onMessageEscPress(evt) {
-    window.util.isEscPress(evt, closeMessage);
+    window.util.onEscPress(evt, closeMessage);
   }
 
   function onMessageClick() {
-    window.util.isDocumentClick(closeMessage);
+    window.util.onDocumentClick(closeMessage);
   }
 
   function documentAddEventListener() {
     document.addEventListener(`keydown`, onMessageEscPress);
-    window.util.isDocumentClick(closeMessage);
+    window.util.onDocumentClick(closeMessage);
   }
 
   function documentRemoveEventListener() {

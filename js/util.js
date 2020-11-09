@@ -3,6 +3,25 @@
 (function () {
   const PRIMARY_MOUSE_BUTTON = 0;
 
+  const OFFER_TYPES = {
+    flat: {
+      minPrice: `1000`,
+      text: `Квартира`
+    },
+    house: {
+      minPrice: `5000`,
+      text: `Дом`
+    },
+    palace: {
+      minPrice: `10000`,
+      text: `Дворец`
+    },
+    bungalow: {
+      minPrice: `0`,
+      text: `Бунгало`
+    }
+  };
+
   function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -23,37 +42,38 @@
     return newArray;
   }
 
-  function isPrimaryMouseButtonPress(evt, action) {
+  function onPrimaryMouseButtonPress(evt, action) {
     if (evt.button === PRIMARY_MOUSE_BUTTON) {
       action();
     }
   }
 
-  function isEscPress(evt, action) {
+  function onEscPress(evt, action) {
     if (evt.key === `Escape`) {
       action();
     }
   }
 
-  function isEnterPress(evt, action) {
+  function onEnterPress(evt, action) {
     if (evt.key === `Enter`) {
       action();
     }
   }
 
-  function isDocumentClick(action) {
+  function onDocumentClick(action) {
     document.addEventListener(`click`, function () {
       action();
     });
   }
 
   window.util = {
+    offerTypes: OFFER_TYPES,
     getRandom,
     getRandomItem,
     getRandomItems,
-    isPrimaryMouseButtonPress,
-    isEscPress,
-    isEnterPress,
-    isDocumentClick
+    onPrimaryMouseButtonPress,
+    onEscPress,
+    onEnterPress,
+    onDocumentClick
   };
 })();

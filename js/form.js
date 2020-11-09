@@ -3,6 +3,7 @@
 (function () {
   const ROOMS_NOT_FOR_GUESTS = 100;
   const advertFormElement = document.querySelector(`.ad-form`);
+  const addressInputElement = advertFormElement.querySelector(`#address`);
   const roomQuantityElement = advertFormElement.querySelector(`#room_number`);
   const guestQuantityElement = advertFormElement.querySelector(`#capacity`);
   const priceElement = advertFormElement.querySelector(`#price`);
@@ -10,25 +11,6 @@
   const checkInFieldElement = advertFormElement.querySelector(`#timein`);
   const checkOutFieldElement = advertFormElement.querySelector(`#timeout`);
   const resetButtonElement = advertFormElement.querySelector(`.ad-form__reset`);
-
-  const OFFER_TYPES = {
-    flat: {
-      minPrice: `1000`,
-      text: `Квартира`
-    },
-    house: {
-      minPrice: `5000`,
-      text: `Дом`
-    },
-    palace: {
-      minPrice: `10000`,
-      text: `Дворец`
-    },
-    bungalow: {
-      minPrice: `0`,
-      text: `Бунгало`
-    }
-  };
 
   const roomValidityMessage = {
     1: `1 комната — для 1 гостя`,
@@ -50,8 +32,8 @@
   }
 
   function checkMinPrice() {
-    priceElement.setAttribute(`min`, OFFER_TYPES[typeFieldElement.value].minPrice);
-    priceElement.setAttribute(`placeholder`, OFFER_TYPES[typeFieldElement.value].minPrice);
+    priceElement.setAttribute(`min`, window.util.offerTypes[typeFieldElement.value].minPrice);
+    priceElement.setAttribute(`placeholder`, window.util.offerTypes[typeFieldElement.value].minPrice);
   }
 
   function checkValidationCapacity() {
@@ -106,16 +88,28 @@
 
   advertFormElement.addEventListener(`submit`, onFormSubmit);
 
-  resetButtonElement.addEventListener(`click`, function (evt) {
-    evt.preventDefault();
+  resetButtonElement.addEventListener(`click`, function () {
     advertFormElement.reset();
     checkValidation();
     window.main.deactivatePage();
   });
 
+  function fillAddress(obj, height) {
+    let addressX = Math.floor(parseInt(obj.style.left, 10) + obj.clientWidth / 2);
+    let addressY;
+    if (advertFormElement.classList.contains(`ad-form--disabled`)) {
+      addressY = (Math.floor(parseInt(obj.style.top, 10) + obj.clientHeight / 2));
+    } else {
+      addressY = (Math.floor(parseInt(obj.style.top, 10) + height));
+    }
+
+    addressInputElement.value = `${addressX}, ${addressY}`;
+  }
+
   window.form = {
     checkValidation,
     disableItems,
-    enableItems
+    enableItems,
+    fillAddress
   };
 })();

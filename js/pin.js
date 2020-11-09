@@ -7,7 +7,7 @@
 
   function getPin(ad) {
     if (!ad.offer) {
-      return;
+      return false;
     }
     const pin = pinTemplateElement.cloneNode(true);
     const img = pin.querySelector(`img`);

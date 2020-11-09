@@ -6,22 +6,22 @@
   const fieldsetElements = document.querySelectorAll(`fieldset`);
 
   function mainPinRemoveEventListener() {
-    mainPinElement.removeEventListener(`mousedown`, onMouseActivatePage);
-    mainPinElement.removeEventListener(`keydown`, onEnterActivatePage);
+    mainPinElement.removeEventListener(`mousedown`, onMouseClickActivatePage);
+    mainPinElement.removeEventListener(`keydown`, onEnterPressActivatePage);
   }
 
   function mainPinAddEventListener() {
-    mainPinElement.addEventListener(`mousedown`, onMouseActivatePage);
-    mainPinElement.addEventListener(`keydown`, onEnterActivatePage);
+    mainPinElement.addEventListener(`mousedown`, onMouseClickActivatePage);
+    mainPinElement.addEventListener(`keydown`, onEnterPressActivatePage);
   }
 
-  function onMouseActivatePage(evt) {
-    window.util.isPrimaryMouseButtonPress(evt, activatePage);
+  function onMouseClickActivatePage(evt) {
+    window.util.onPrimaryMouseButtonPress(evt, activatePage);
     mainPinRemoveEventListener();
   }
 
-  function onEnterActivatePage(evt) {
-    window.util.isEnterEvent(evt, activatePage);
+  function onEnterPressActivatePage(evt) {
+    window.util.onEnterEvent(evt, activatePage);
     mainPinRemoveEventListener();
   }
 
@@ -30,8 +30,8 @@
   function deactivatePage() {
     window.map.disable();
     window.form.disableItems(fieldsetElements);
-    window.address.fill();
     window.pin.remove();
+    window.card.close();
     window.mainPin.restart();
     advertFormElement.classList.add(`ad-form--disabled`);
     mainPinAddEventListener();
@@ -42,7 +42,6 @@
   function activatePage() {
     window.map.enable();
     window.form.enableItems(fieldsetElements);
-    window.mainPin.address();
     window.form.checkValidation();
     advertFormElement.classList.remove(`ad-form--disabled`);
     window.server.load(window.pin.insert, window.message.errorHandler);

@@ -4,8 +4,6 @@
   const MAIN_PIN_POINTER_HEIGHT = 10;
   const mapElement = document.querySelector(`.map`);
   const mainPinElement = mapElement.querySelector(`.map__pin--main`);
-  const advertFormElement = document.querySelector(`.ad-form`);
-  const addressInputElement = advertFormElement.querySelector(`#address`);
   const mainPinHeight = mainPinElement.offsetHeight + MAIN_PIN_POINTER_HEIGHT;
   const mainPinHalfWidth = Math.floor(mainPinElement.offsetWidth / 2);
 
@@ -24,98 +22,91 @@
     MAX: 630
   };
 
-  function getCoordinates() {
-    mainPinElement.removeEventListener(`mousedown`, moveMainPin);
-    window.address.fill();
+  let mainPinPositionX = {
+    min: CoordinateX.MIN - mainPinHalfWidth,
+    max: CoordinateX.MAX - mainPinHalfWidth
+  };
 
-    let MainPinPositionX = {
-      MIN: CoordinateX.MIN - mainPinHalfWidth,
-      MAX: CoordinateX.MAX - mainPinHalfWidth
+  let mainPinPositionY = {
+    min: CoordinateY.MIN - mainPinHeight,
+    max: CoordinateY.MAX - mainPinHeight
+  };
+
+  function moveMainPin(evt) {
+    evt.preventDefault();
+    let dragged = false;
+
+    let currentCoords = {
+      X: evt.clientX,
+      Y: evt.clientY
     };
 
-    let MainPinPositionY = {
-      MIN: CoordinateY.MIN - mainPinHeight,
-      MAX: CoordinateY.MAX - mainPinHeight
-    };
+    function onMouseMove(moveEvt) {
+      moveEvt.preventDefault();
+      window.card.close();
+      window.pin.disable();
+      dragged = true;
 
-    mainPinElement.addEventListener(`mousedown`, moveMainPin);
-
-    function moveMainPin(evt) {
-      evt.preventDefault();
-      let dragged = false;
-
-      let StartCoords = {
-        X: evt.clientX,
-        Y: evt.clientY
+      const Shift = {
+        X: currentCoords.X - moveEvt.clientX,
+        Y: currentCoords.Y - moveEvt.clientY
       };
 
-      function onMouseMove(moveEvt) {
-        moveEvt.preventDefault();
-        window.card.hide();
-        window.pin.disable();
-        dragged = true;
+      currentCoords = {
+        X: moveEvt.clientX,
+        Y: moveEvt.clientY
+      };
 
-        const Shift = {
-          X: StartCoords.X - moveEvt.clientX,
-          Y: StartCoords.Y - moveEvt.clientY
-        };
+      let mainPinY = mainPinElement.offsetTop - Shift.Y;
+      let mainPinX = mainPinElement.offsetLeft - Shift.X;
 
-        StartCoords = {
-          X: moveEvt.clientX,
-          Y: moveEvt.clientY
-        };
-
-        let mainPinY = mainPinElement.offsetTop - Shift.Y;
-        let mainPinX = mainPinElement.offsetLeft - Shift.X;
-
-        if (mainPinX <= MainPinPositionX.MIN) {
-          mainPinX = MainPinPositionX.MIN;
-        } else if (mainPinX >= MainPinPositionX.MAX) {
-          mainPinX = MainPinPositionX.MAX;
-        }
-
-        if (mainPinY <= MainPinPositionY.MIN) {
-          mainPinY = MainPinPositionY.MIN;
-        } else if (mainPinY >= MainPinPositionY.MAX) {
-          mainPinY = MainPinPositionY.MAX;
-        }
-
-        mainPinElement.style.top = `${mainPinY}px`;
-        mainPinElement.style.left = `${mainPinX}px`;
-
-        addressInputElement.value = `${mainPinX + mainPinHalfWidth}, ${mainPinY + mainPinHeight}`;
+      if (mainPinX <= mainPinPositionX.min) {
+        mainPinX = mainPinPositionX.min;
+      } else if (mainPinX >= mainPinPositionX.max) {
+        mainPinX = mainPinPositionX.max;
       }
 
-      function onMouseUp(upEvt) {
-        upEvt.preventDefault();
-
-        document.removeEventListener(`mousemove`, onMouseMove);
-        document.removeEventListener(`mouseup`, onMouseUp);
-
-        function onClickPreventDefault(clickEvt) {
-          clickEvt.preventDefault();
-          mainPinElement.removeEventListener(`click`, onClickPreventDefault);
-        }
-
-        if (dragged) {
-          mainPinElement.addEventListener(`click`, onClickPreventDefault);
-        }
-
-        window.address.fill();
+      if (mainPinY <= mainPinPositionY.min) {
+        mainPinY = mainPinPositionY.min;
+      } else if (mainPinY >= mainPinPositionY.max) {
+        mainPinY = mainPinPositionY.max;
       }
 
-      document.addEventListener(`mousemove`, onMouseMove);
-      document.addEventListener(`mouseup`, onMouseUp);
+      mainPinElement.style.top = `${mainPinY}px`;
+      mainPinElement.style.left = `${mainPinX}px`;
+
+      window.form.fillAddress(mainPinElement, mainPinHeight);
     }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
+
+      function onClickPreventDefault(clickEvt) {
+        clickEvt.preventDefault();
+        mainPinElement.removeEventListener(`click`, onClickPreventDefault);
+      }
+
+      if (dragged) {
+        mainPinElement.addEventListener(`click`, onClickPreventDefault);
+      }
+    }
+
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
   }
+
+  mainPinElement.addEventListener(`mousedown`, moveMainPin);
 
   function resetMainPin() {
     mainPinElement.style.top = `${MainPinStartСoordinates.X}px`;
     mainPinElement.style.left = `${MainPinStartСoordinates.Y}px`;
+    window.form.fillAddress(mainPinElement, mainPinHeight);
   }
 
   window.mainPin = {
-    address: getCoordinates,
     restart: resetMainPin
   };
 })();
