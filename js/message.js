@@ -2,23 +2,23 @@
 
 (function () {
   const mainElement = document.querySelector(`main`);
-  const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
-  const errorButtonElement = document.querySelector(`.error__button`);
   const successMessageTemplateElement = document.querySelector(`#success`).content.querySelector(`.success`);
 
-  function errorHandler(errorMessage) {
-    const node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; min-height: 40px; text-align: center; background-color: red;`;
-    node.style.position = `fixed`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `24px`;
-    node.style.color = `black`;
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement(`afterbegin`, node);
-  }
+  // function errorHandler(errorMessage) {
+  //   const node = document.createElement(`div`);
+  //   node.style = `z-index: 100; margin: 0 auto; min-height: 40px; text-align: center; background-color: red;`;
+  //   node.style.position = `fixed`;
+  //   node.style.left = 0;
+  //   node.style.right = 0;
+  //   node.style.fontSize = `24px`;
+  //   node.style.color = `black`;
+  //   node.textContent = errorMessage;
+  //   document.body.insertAdjacentElement(`afterbegin`, node);
+  // }
 
   function showErrorMessage() {
+    const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
+    const errorButtonElement = errorMessageTemplateElement.querySelector(`.error__button`);
     mainElement.insertAdjacentElement(`afterbegin`, errorMessageTemplateElement);
     errorButtonElement.addEventListener(`click`, function () {
       errorMessageTemplateElement.remove();
@@ -65,7 +65,6 @@
   }
 
   window.message = {
-    errorHandler,
     error: showErrorMessage,
     success: showSuccessMessage
   };

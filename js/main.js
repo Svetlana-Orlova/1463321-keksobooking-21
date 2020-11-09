@@ -44,7 +44,7 @@
     window.form.enableItems(fieldsetElements);
     window.form.checkValidation();
     advertFormElement.classList.remove(`ad-form--disabled`);
-    window.server.load(window.pin.insert, window.message.errorHandler);
+    window.server.load(window.pin.insert, window.message.error);
   }
 
   window.main = {
