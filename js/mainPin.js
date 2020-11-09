@@ -25,7 +25,7 @@
   };
 
   function getCoordinates() {
-    mainPinElement.removeEventListener(`mousedown`, foo);
+    mainPinElement.removeEventListener(`mousedown`, moveMainPin);
     window.address.fill();
 
     let MainPinPositionX = {
@@ -38,9 +38,9 @@
       MAX: CoordinateY.MAX - mainPinHeight
     };
 
-    mainPinElement.addEventListener(`mousedown`, foo);
+    mainPinElement.addEventListener(`mousedown`, moveMainPin);
 
-    function foo (evt) {
+    function moveMainPin(evt) {
       evt.preventDefault();
       let dragged = false;
 
