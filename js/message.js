@@ -3,10 +3,10 @@
 (function () {
   const mainElement = document.querySelector(`main`);
   const successMessageTemplateElement = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
+  const errorButtonElement = errorMessageTemplateElement.querySelector(`.error__button`);
 
   function showErrorMessage() {
-    const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
-    const errorButtonElement = errorMessageTemplateElement.querySelector(`.error__button`);
     mainElement.insertAdjacentElement(`afterbegin`, errorMessageTemplateElement);
     errorButtonElement.addEventListener(`click`, function () {
       errorMessageTemplateElement.remove();
@@ -39,12 +39,12 @@
   }
 
   function onMessageClick() {
-    window.util.onDocumentClick(closeMessage);
+    window.util.addDocumentClick(closeMessage);
   }
 
   function documentAddEventListener() {
     document.addEventListener(`keydown`, onMessageEscPress);
-    window.util.onDocumentClick(closeMessage);
+    document.addEventListener(`click`, onMessageClick);
   }
 
   function documentRemoveEventListener() {

@@ -32,17 +32,17 @@
     window.form.disableItems(fieldsetElements);
     window.pin.remove();
     window.card.close();
-    window.mainPin.restart();
     advertFormElement.classList.add(`ad-form--disabled`);
+    window.mainPin.restart();
     mainPinAddEventListener();
   }
 
   deactivatePage();
+  window.form.checkValidation();
 
   function activatePage() {
     window.map.enable();
     window.form.enableItems(fieldsetElements);
-    window.form.checkValidation();
     advertFormElement.classList.remove(`ad-form--disabled`);
     window.server.load(window.pin.insert, window.message.error);
   }

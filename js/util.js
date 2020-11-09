@@ -60,9 +60,8 @@
     }
   }
 
-  function onDocumentClick(action) {
+  function addDocumentClick(action) {
     document.addEventListener(`click`, function () {
-      console.log("on click")
       action();
     });
   }
@@ -75,6 +74,6 @@
     onPrimaryMouseButtonPress,
     onEscPress,
     onEnterPress,
-    onDocumentClick
+    addDocumentClick
   };
 })();

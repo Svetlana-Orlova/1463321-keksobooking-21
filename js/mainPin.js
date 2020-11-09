@@ -92,6 +92,8 @@
       if (dragged) {
         mainPinElement.addEventListener(`click`, onClickPreventDefault);
       }
+
+      window.form.fillAddress(mainPinElement, mainPinHeight);
     }
 
     document.addEventListener(`mousemove`, onMouseMove);

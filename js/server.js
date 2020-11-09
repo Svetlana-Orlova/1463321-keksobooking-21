@@ -11,7 +11,6 @@
 
     xhr.addEventListener(`load`, function () {
       let error;
-      console.log(xhr.status)
       switch (xhr.status) {
         case 200:
           onSuccess(xhr.response);
