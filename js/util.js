@@ -62,6 +62,7 @@
 
   function onDocumentClick(action) {
     document.addEventListener(`click`, function () {
+      console.log("on click")
       action();
     });
   }
