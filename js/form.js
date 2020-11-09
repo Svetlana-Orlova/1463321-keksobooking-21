@@ -109,9 +109,8 @@
   resetButtonElement.addEventListener(`click`, function (evt) {
     evt.preventDefault();
     advertFormElement.reset();
-    window.mainPin.restart();
-    window.address.fill();
     checkValidation();
+    window.main.deactivatePage();
   });
 
   window.form = {

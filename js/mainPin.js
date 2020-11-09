@@ -25,6 +25,7 @@
   };
 
   function getCoordinates() {
+    mainPinElement.removeEventListener(`mousedown`, foo);
     window.address.fill();
 
     let MainPinPositionX = {
@@ -37,7 +38,9 @@
       MAX: CoordinateY.MAX - mainPinHeight
     };
 
-    mainPinElement.addEventListener(`mousedown`, function (evt) {
+    mainPinElement.addEventListener(`mousedown`, foo);
+
+    function foo (evt) {
       evt.preventDefault();
       let dragged = false;
 
@@ -103,7 +106,7 @@
 
       document.addEventListener(`mousemove`, onMouseMove);
       document.addEventListener(`mouseup`, onMouseUp);
-    });
+    }
   }
 
   function resetMainPin() {
