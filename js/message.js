@@ -78,5 +78,4 @@
     error: showErrorMessage,
     success: showSuccessMessage
   };
-
 })();
