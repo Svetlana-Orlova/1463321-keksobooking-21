@@ -64,7 +64,7 @@
   }
 
   function showMapPins() {
-    window.server.load(successLoadHandler, window.message.error);
+    window.server.load(successLoadHandler, window.message.errorHandler);
   }
 
   function updatePins() {

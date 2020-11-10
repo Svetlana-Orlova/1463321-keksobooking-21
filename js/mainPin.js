@@ -34,7 +34,7 @@
 
   function moveMainPin(evt) {
     evt.preventDefault();
-    let dragged = false;
+    // let dragged = false;
 
     let currentCoords = {
       X: evt.clientX,
@@ -45,7 +45,7 @@
       moveEvt.preventDefault();
       window.card.close();
       window.pin.disable();
-      dragged = true;
+      // dragged = true;
 
       const Shift = {
         X: currentCoords.X - moveEvt.clientX,
@@ -84,14 +84,14 @@
       document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
 
-      function onClickPreventDefault(clickEvt) {
-        clickEvt.preventDefault();
-        mainPinElement.removeEventListener(`click`, onClickPreventDefault);
-      }
+      // function onClickPreventDefault(clickEvt) {
+      //   clickEvt.preventDefault();
+      //   mainPinElement.removeEventListener(`click`, onClickPreventDefault);
+      // }
 
-      if (dragged) {
-        mainPinElement.addEventListener(`click`, onClickPreventDefault);
-      }
+      // if (dragged) {
+      //   mainPinElement.addEventListener(`click`, onClickPreventDefault);
+      // }
 
       window.form.fillAddress(mainPinElement, mainPinHeight);
     }
