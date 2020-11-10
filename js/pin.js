@@ -69,5 +69,4 @@
     insert: insertPins,
     remove: removePins
   };
-
 })();
