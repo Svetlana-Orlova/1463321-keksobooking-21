@@ -111,6 +111,7 @@
   }
 
   window.form = {
+    filters: filtersFormElement,
     checkValidation,
     disableItems,
     enableItems,
