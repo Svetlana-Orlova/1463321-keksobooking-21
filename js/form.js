@@ -3,6 +3,7 @@
 (function () {
   const ROOMS_NOT_FOR_GUESTS = 100;
   const advertFormElement = document.querySelector(`.ad-form`);
+  const filtersFormElement = document.querySelector(`.map__filters`);
   const addressInputElement = advertFormElement.querySelector(`#address`);
   const roomQuantityElement = advertFormElement.querySelector(`#room_number`);
   const guestQuantityElement = advertFormElement.querySelector(`#capacity`);
@@ -73,6 +74,7 @@
 
   function onSuccess() {
     advertFormElement.reset();
+    filtersFormElement.reset();
     checkMinPrice();
     window.message.success();
     window.main.deactivatePage();
@@ -91,6 +93,7 @@
 
   resetButtonElement.addEventListener(`click`, function () {
     advertFormElement.reset();
+    filtersFormElement.reset();
     checkValidation();
     window.main.deactivatePage();
   });
