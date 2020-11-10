@@ -86,7 +86,7 @@
     removePins();
     window.card.close();
 
-    const filteredAds = window.filter.sortOffers(adverts);
+    const filteredAds = window.filter.doOffers(adverts);
 
     insertPins(filteredAds);
   }

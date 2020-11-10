@@ -36,7 +36,7 @@
     });
   }
 
-  function sortOffers(offers) {
+  function filterOffers(offers) {
     const filteredOffers = [];
 
     for (let i = 0; i < offers.length; i++) {
@@ -59,7 +59,7 @@
   }
 
   window.filter = {
-    sortOffers
+    doOffers: filterOffers
   };
 
 })();
