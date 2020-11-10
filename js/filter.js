@@ -30,7 +30,7 @@
     }
   }
 
-  function selectFeatures() {
+  function getSelectFeatures() {
     return Array.from(featuresElement.querySelectorAll(`input:checked`)).map(function (item) {
       return item.value;
     });
@@ -45,7 +45,7 @@
       const isRoomsMatched = roomsElement.value === ANY ? true : element.offer.rooms === +roomsElement.value;
       const isGuestMatched = guestsElement.value === ANY ? true : element.offer.guests === +guestsElement.value;
       const isPriceMatched = checkPrice(element);
-      const isFeaturesMatched = selectFeatures().every(function (feature) {
+      const isFeaturesMatched = getSelectFeatures().every(function (feature) {
         return element.offer.features.includes(feature);
       });
       if (isTypeMatched && isRoomsMatched && isGuestMatched && isPriceMatched && isFeaturesMatched) {
