@@ -1,17 +1,16 @@
 'use strict';
-(function () {
-  const mapElement = document.querySelector(`.map`);
 
-  function disableMap() {
-    mapElement.classList.add(`map--faded`);
-  }
+const mapElement = document.querySelector(`.map`);
 
-  function enableMap() {
-    mapElement.classList.remove(`map--faded`);
-  }
+function disableMap() {
+  mapElement.classList.add(`map--faded`);
+}
 
-  window.map = {
-    disable: disableMap,
-    enable: enableMap
-  };
-})();
+function enableMap() {
+  mapElement.classList.remove(`map--faded`);
+}
+
+window.map = {
+  disable: disableMap,
+  enable: enableMap
+};
