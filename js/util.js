@@ -59,12 +59,6 @@ function onEnterPress(evt, action) {
   }
 }
 
-function addDocumentClick(action) {
-  document.addEventListener(`click`, function () {
-    action();
-  });
-}
-
 window.util = {
   offerTypes: OFFER_TYPES,
   getRandom,
@@ -72,6 +66,5 @@ window.util = {
   getRandomItems,
   onPrimaryMouseButtonPress,
   onEscPress,
-  onEnterPress,
-  addDocumentClick
+  onEnterPress
 };

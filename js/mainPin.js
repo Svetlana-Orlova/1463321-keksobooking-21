@@ -44,6 +44,7 @@ function moveMainPin(evt) {
     moveEvt.preventDefault();
     window.card.close();
     window.pin.disable();
+    mainPinElement.removeEventListener(`keydown`, onMainPinEnterPress)
     dragged = true;
 
     const Shift = {
@@ -88,7 +89,7 @@ function moveMainPin(evt) {
       mainPinElement.removeEventListener(`click`, onClickPreventDefault);
     }
 
-    if (dragged) {
+    if (dragged === false) {
       mainPinElement.addEventListener(`click`, onClickPreventDefault);
     }
 
@@ -105,6 +106,11 @@ function resetMainPin() {
   mainPinElement.style.top = `${MainPinStartСoordinates.X}px`;
   mainPinElement.style.left = `${MainPinStartСoordinates.Y}px`;
   window.form.fillAddress(mainPinElement, mainPinHeight);
+  mainPinElement.addEventListener(`keydown`, onMainPinEnterPress)
+}
+
+function onMainPinEnterPress(evt) {
+  window.util.onEnterPress(evt, window.main.activatePage);
 }
 
 window.mainPin = {

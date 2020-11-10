@@ -47,5 +47,6 @@ function activatePage() {
 }
 
 window.main = {
-  deactivatePage
+  deactivatePage,
+  activatePage
 };
