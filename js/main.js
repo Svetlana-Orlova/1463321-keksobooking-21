@@ -44,8 +44,7 @@
     window.map.enable();
     window.form.enableItems(fieldsetElements);
     advertFormElement.classList.remove(`ad-form--disabled`);
-    window.server.load(window.pin.insert, window.message.error);
-    window.filter.getVerification();
+    window.filter.showMapPins();
   }
 
   window.main = {
