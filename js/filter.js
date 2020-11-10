@@ -9,14 +9,13 @@
   const roomsElement = filtersElement.querySelector(`#housing-rooms`);
   const guestsElement = filtersElement.querySelector(`#housing-guests`);
   const featuresElement = filtersElement.querySelector(`#housing-features`);
-  const fieldsetElements = document.querySelectorAll(`fieldset`);
 
   const Prices = {
     MIN: 10000,
     MAX: 50000
   };
 
-  function setPrice(element) {
+  function checkPrice(element) {
     switch (priceElement.value) {
       case ANY:
         return true;
@@ -31,55 +30,36 @@
     }
   }
 
-  function neededFeatures() {
+  function selectFeatures() {
     return Array.from(featuresElement.querySelectorAll(`input:checked`)).map(function (item) {
       return item.value;
     });
   }
 
-  function getVerification(offers) {
+  function sortOffers(offers) {
+    const filteredOffers = [];
 
-    return offers.filter(function (element) {
-      let isTypeMatched = typeElement.value === ANY ? true : element.offer.type === typeElement.value;
-      let isRoomsMatched = roomsElement.value === ANY ? true : element.offer.rooms === +roomsElement.value;
-      let isGuestMatched = guestsElement.value === ANY ? true : element.offer.guests === +guestsElement.value;
-      let isPriceMatched = setPrice(element);
-      let isFeaturesMatched = neededFeatures().every(function (feature) {
+    for (let i = 0; i < offers.length; i++) {
+      const element = offers[i];
+      const isTypeMatched = typeElement.value === ANY ? true : element.offer.type === typeElement.value;
+      const isRoomsMatched = roomsElement.value === ANY ? true : element.offer.rooms === +roomsElement.value;
+      const isGuestMatched = guestsElement.value === ANY ? true : element.offer.guests === +guestsElement.value;
+      const isPriceMatched = checkPrice(element);
+      const isFeaturesMatched = selectFeatures().every(function (feature) {
         return element.offer.features.includes(feature);
       });
-      return !!(isTypeMatched && isRoomsMatched && isGuestMatched && isPriceMatched && isFeaturesMatched);
-    }).slice(0, ADS_NUMBER);
-  }
-
-  let ads = [];
-
-  function successLoadHandler(jsonData) {
-    ads = jsonData;
-
-    if (jsonData.length > 0) {
-      window.form.enableItems(fieldsetElements);
+      if (isTypeMatched && isRoomsMatched && isGuestMatched && isPriceMatched && isFeaturesMatched) {
+        filteredOffers.push(element);
+      }
+      if (filteredOffers.length === ADS_NUMBER) {
+        break;
+      }
     }
-
-    updatePins();
+    return filteredOffers;
   }
-
-  function showMapPins() {
-    window.server.load(successLoadHandler, window.message.errorHandler);
-  }
-
-  function updatePins() {
-    window.pin.remove();
-    window.card.close();
-
-    const filteredAds = getVerification(ads);
-
-    window.pin.insert(filteredAds);
-  }
-
-  filtersElement.addEventListener(`change`, window.debounce(updatePins));
 
   window.filter = {
-    showMapPins
+    sortOffers
   };
 
 })();

@@ -4,6 +4,8 @@
   const MAX_PINS = 5;
   const pinTemplateElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const containerPinTemplateElement = document.querySelector(`.map__pins`);
+  const fieldsetElements = document.querySelectorAll(`fieldset`);
+  const filtersElement = document.querySelector(`.map__filters`);
 
   function getPin(ad) {
     if (!ad.offer) {
@@ -64,9 +66,37 @@
     });
   }
 
+  let adverts = [];
+
+  function successLoadHandler(jsonData) {
+    adverts = jsonData;
+
+    if (jsonData.length > 0) {
+      window.form.enableItems(fieldsetElements);
+    }
+
+    updatePins();
+  }
+
+  function showMapPins() {
+    window.server.load(successLoadHandler, window.message.errorHandler);
+  }
+
+  function updatePins() {
+    removePins();
+    window.card.close();
+
+    const filteredAds = window.filter.sortOffers(adverts);
+
+    insertPins(filteredAds);
+  }
+
+  filtersElement.addEventListener(`change`, window.debounce(updatePins));
+
   window.pin = {
     disable: disablePin,
     insert: insertPins,
-    remove: removePins
+    remove: removePins,
+    update: showMapPins
   };
 })();
