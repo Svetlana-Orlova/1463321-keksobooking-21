@@ -28,6 +28,7 @@
     }
 
     document.body.insertAdjacentElement(`afterbegin`, node);
+    window.form.filters.remove();
   }
 
   function showErrorMessage() {
