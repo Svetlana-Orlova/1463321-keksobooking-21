@@ -61,5 +61,4 @@
   window.filter = {
     doOffers: filterOffers
   };
-
 })();
