@@ -33,7 +33,7 @@
   let offers = [];
 
   function neededFeatures() {
-    return Array.from(featuresElement.querySelectorAll(`input:checked`)).map(function (item) { /* Сначала Будет создана коллекция/псевдомассив из выбранных значений featuresElement далее с помощью array.from он будет преобразован в реальный массив состоящий из выбранных значений и уже с помощью map будет создан новый массив который будет состоять из значений выбранных элементов */
+    return Array.from(featuresElement.querySelectorAll(`input:checked`)).map(function (item) {
       return item.value;
     });
   }
@@ -66,5 +66,3 @@
     getVerification
   };
 })();
-
-

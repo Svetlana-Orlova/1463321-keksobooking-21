@@ -73,6 +73,7 @@
 
   function onSuccess() {
     advertFormElement.reset();
+    checkMinPrice();
     window.message.success();
     window.main.deactivatePage();
   }
