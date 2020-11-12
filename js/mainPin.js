@@ -6,7 +6,7 @@ const mainPinElement = mapElement.querySelector(`.map__pin--main`);
 const mainPinHeight = mainPinElement.offsetHeight + MAIN_PIN_POINTER_HEIGHT;
 const mainPinHalfWidth = Math.floor(mainPinElement.offsetWidth / 2);
 
-const MainPinStartСoordinates = {
+const MainPinStartCoordinates = {
   X: 375,
   Y: 570,
 };
@@ -31,7 +31,7 @@ let mainPinPositionY = {
   max: CoordinateY.MAX - mainPinHeight
 };
 
-function moveMainPin(evt) {
+const moveMainPin = (evt) => {
   evt.preventDefault();
   let dragged = false;
 
@@ -40,7 +40,7 @@ function moveMainPin(evt) {
     Y: evt.clientY
   };
 
-  function onMouseMove(moveEvt) {
+  const onMouseMove = (moveEvt) => {
     moveEvt.preventDefault();
     window.card.close();
     window.pin.disable();
@@ -76,42 +76,42 @@ function moveMainPin(evt) {
     mainPinElement.style.left = `${mainPinX}px`;
 
     window.form.fillAddress(mainPinElement, mainPinHeight);
-  }
+  };
 
-  function onMouseUp(upEvt) {
+  const onMouseUp = (upEvt) => {
     upEvt.preventDefault();
 
     document.removeEventListener(`mousemove`, onMouseMove);
     document.removeEventListener(`mouseup`, onMouseUp);
 
-    function onClickPreventDefault(clickEvt) {
+    const onClickPreventDefault = (clickEvt) => {
       clickEvt.preventDefault();
       mainPinElement.removeEventListener(`click`, onClickPreventDefault);
-    }
+    };
 
     if (dragged === false) {
       mainPinElement.addEventListener(`click`, onClickPreventDefault);
     }
 
     window.form.fillAddress(mainPinElement, mainPinHeight);
-  }
+  };
 
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);
-}
+};
 
 mainPinElement.addEventListener(`mousedown`, moveMainPin);
 
-function resetMainPin() {
-  mainPinElement.style.top = `${MainPinStartСoordinates.X}px`;
-  mainPinElement.style.left = `${MainPinStartСoordinates.Y}px`;
+const resetMainPin = () => {
+  mainPinElement.style.top = `${MainPinStartCoordinates.X}px`;
+  mainPinElement.style.left = `${MainPinStartCoordinates.Y}px`;
   window.form.fillAddress(mainPinElement, mainPinHeight);
   mainPinElement.addEventListener(`keydown`, onMainPinEnterPress);
-}
+};
 
-function onMainPinEnterPress(evt) {
+const onMainPinEnterPress = (evt) => {
   window.util.onEnterPress(evt, window.main.activatePage);
-}
+};
 
 window.mainPin = {
   restart: resetMainPin

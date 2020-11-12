@@ -4,11 +4,11 @@ const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 const UPLOAD_URL = ` https://21.javascript.pages.academy/keksobooking`;
 const TIMEOUT = 4000;
 
-function query(method, url, data, onSuccess, onError) {
+const query = (method, url, data, onSuccess, onError) => {
   const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
 
-  xhr.addEventListener(`load`, function () {
+  xhr.addEventListener(`load`, () => {
     let error;
     switch (xhr.status) {
       case 200:
@@ -32,11 +32,11 @@ function query(method, url, data, onSuccess, onError) {
     }
   });
 
-  xhr.addEventListener(`error`, function () {
+  xhr.addEventListener(`error`, () => {
     onError(`Произошла ошибка соединения`);
   });
 
-  xhr.addEventListener(`timeout`, function () {
+  xhr.addEventListener(`timeout`, () => {
     onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
   });
 
@@ -47,15 +47,15 @@ function query(method, url, data, onSuccess, onError) {
   } else {
     xhr.send();
   }
-}
+};
 
-function loadData(cbSuccess, cbError) {
+const loadData = (cbSuccess, cbError) => {
   query(`GET`, LOAD_URL, null, cbSuccess, cbError);
-}
+};
 
-function uploadData(data, cbSuccess, cbError) {
+const uploadData = (data, cbSuccess, cbError) => {
   query(`POST`, UPLOAD_URL, data, cbSuccess, cbError);
-}
+};
 
 window.server = {
   load: loadData,

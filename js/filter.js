@@ -14,7 +14,7 @@ const Prices = {
   MAX: 50000
 };
 
-function checkPrice(element) {
+const checkPrice = (element) => {
   switch (priceElement.value) {
     case ANY:
       return true;
@@ -27,15 +27,15 @@ function checkPrice(element) {
     default:
       return element === priceElement.value;
   }
-}
+};
 
-function getSelectFeatures() {
-  return Array.from(featuresElement.querySelectorAll(`input:checked`)).map(function (item) {
+const getSelectFeatures = () => {
+  return Array.from(featuresElement.querySelectorAll(`input:checked`)).map((item) => {
     return item.value;
   });
-}
+};
 
-function filterOffers(offers) {
+const filterOffers = (offers) => {
   const filteredOffers = [];
 
   for (let i = 0; i < offers.length; i++) {
@@ -44,7 +44,7 @@ function filterOffers(offers) {
     const isRoomsMatched = roomsElement.value === ANY ? true : element.offer.rooms === +roomsElement.value;
     const isGuestMatched = guestsElement.value === ANY ? true : element.offer.guests === +guestsElement.value;
     const isPriceMatched = checkPrice(element);
-    const isFeaturesMatched = getSelectFeatures().every(function (feature) {
+    const isFeaturesMatched = getSelectFeatures().every((feature) => {
       return element.offer.features.includes(feature);
     });
     if (isTypeMatched && isRoomsMatched && isGuestMatched && isPriceMatched && isFeaturesMatched) {
@@ -55,7 +55,7 @@ function filterOffers(offers) {
     }
   }
   return filteredOffers;
-}
+};
 
 window.filter = {
   doOffers: filterOffers

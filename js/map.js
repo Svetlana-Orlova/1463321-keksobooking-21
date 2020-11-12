@@ -2,13 +2,13 @@
 
 const mapElement = document.querySelector(`.map`);
 
-function disableMap() {
+const disableMap = () => {
   mapElement.classList.add(`map--faded`);
-}
+};
 
-function enableMap() {
+const enableMap = () => {
   mapElement.classList.remove(`map--faded`);
-}
+};
 
 window.map = {
   disable: disableMap,

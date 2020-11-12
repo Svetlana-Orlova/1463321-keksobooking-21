@@ -5,7 +5,7 @@ const successMessageTemplateElement = document.querySelector(`#success`).content
 const errorMessageTemplateElement = document.querySelector(`#error`).content.querySelector(`.error`);
 const errorButtonElement = errorMessageTemplateElement.querySelector(`.error__button`);
 
-function errorHandler(errorMessage) {
+const errorHandler = (errorMessage) => {
   const node = document.createElement(`div`);
 
   node.style = `z-index: 100; padding: 10px; margin: 0 auto; color: #fff; font-weight: 500; text-align: center; background-color: #f44336; border-radius: 4px;`;
@@ -17,38 +17,38 @@ function errorHandler(errorMessage) {
 
   node.textContent = errorMessage;
 
-  node.addEventListener(`click`, function () {
+  node.addEventListener(`click`, () => {
     node.remove();
   });
   document.addEventListener(`keydown`, onDocumentEscPress);
 
-  function onDocumentEscPress(evt) {
+  const onDocumentEscPress = (evt) => {
     window.util.onEscPress(evt, node.remove());
-  }
+  };
 
   document.body.insertAdjacentElement(`afterbegin`, node);
   window.form.filters.remove();
-}
+};
 
-function showErrorMessage() {
+const showErrorMessage = () => {
   mainElement.insertAdjacentElement(`afterbegin`, errorMessageTemplateElement);
-  errorButtonElement.addEventListener(`click`, function () {
+  errorButtonElement.addEventListener(`click`, () => {
     errorMessageTemplateElement.remove();
   });
   documentAddEventListener();
-}
+};
 
-function showSuccessMessage() {
+const showSuccessMessage = () => {
   mainElement.insertAdjacentElement(`afterbegin`, successMessageTemplateElement);
   documentAddEventListener();
-}
+};
 
-function closeMessage() {
+const closeMessage = () => {
   removeMessage();
   documentRemoveEventListener();
-}
+};
 
-function removeMessage() {
+const removeMessage = () => {
   const messageSuccess = document.querySelector(`.success`);
   const messageError = document.querySelector(`.error`);
   if (messageSuccess) {
@@ -56,21 +56,21 @@ function removeMessage() {
   } else if (messageError) {
     messageError.remove();
   }
-}
+};
 
-function onMessageEscPress(evt) {
+const onMessageEscPress = (evt) => {
   window.util.onEscPress(evt, closeMessage);
-}
+};
 
-function documentAddEventListener() {
+const documentAddEventListener = () => {
   document.addEventListener(`keydown`, onMessageEscPress);
   document.addEventListener(`click`, closeMessage);
-}
+};
 
-function documentRemoveEventListener() {
+const documentRemoveEventListener = () => {
   document.removeEventListener(`keydown`, onMessageEscPress);
   document.removeEventListener(`click`, closeMessage);
-}
+};
 
 window.message = {
   errorHandler,

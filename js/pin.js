@@ -6,7 +6,7 @@ const containerPinTemplateElement = document.querySelector(`.map__pins`);
 const fieldsetElements = document.querySelectorAll(`fieldset`);
 const filtersElement = document.querySelector(`.map__filters`);
 
-function getPin(ad) {
+const getPin = (ad) => {
   if (!ad.offer) {
     return false;
   }
@@ -17,7 +17,7 @@ function getPin(ad) {
   img.src = ad.author.avatar;
   img.alt = ad.offer.title;
 
-  pin.addEventListener(`click`, function () {
+  pin.addEventListener(`click`, () => {
     window.card.create(window.card.get(ad));
     disablePin();
     pin.classList.add(`map__pin--active`);
@@ -25,9 +25,9 @@ function getPin(ad) {
   });
 
   return pin;
-}
+};
 
-function insertPins(ads) {
+const insertPins = (ads) => {
   const pins = document.createDocumentFragment();
   let count;
 
@@ -42,32 +42,32 @@ function insertPins(ads) {
   }
 
   document.querySelector(`.map__pins`).appendChild(pins);
-}
+};
 
-function disablePin() {
+const disablePin = () => {
   const activePinElement = containerPinTemplateElement.querySelector(`.map__pin--active`);
   if (activePinElement) {
     activePinElement.classList.remove(`map__pin--active`);
   }
-}
+};
 
-function onEscDisablePin(evt) {
+const onEscDisablePin = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
     disablePin();
   }
-}
+};
 
-function removePins() {
+const removePins = () => {
   const pins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
   pins.forEach((pin) => {
     pin.remove();
   });
-}
+};
 
 let adverts = [];
 
-function successLoadHandler(jsonData) {
+const successLoadHandler = (jsonData) => {
   adverts = jsonData;
 
   if (jsonData.length > 0) {
@@ -75,20 +75,20 @@ function successLoadHandler(jsonData) {
   }
 
   updatePins();
-}
+};
 
-function showMapPins() {
+const showMapPins = () => {
   window.server.load(successLoadHandler, window.message.errorHandler);
-}
+};
 
-function updatePins() {
+const updatePins = () => {
   removePins();
   window.card.close();
 
   const filteredAds = window.filter.doOffers(adverts);
 
   insertPins(filteredAds);
-}
+};
 
 filtersElement.addEventListener(`change`, window.debounce(updatePins));
 

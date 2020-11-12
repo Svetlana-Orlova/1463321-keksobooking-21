@@ -4,7 +4,7 @@ const mapElement = document.querySelector(`.map`);
 const cardTemplateElement = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const filtersContainerElement = mapElement.querySelector(`.map__filters-container`);
 
-function getCapacityText(rooms, guests) {
+const getCapacityText = (rooms, guests) => {
   let result = ``;
   if (rooms === 0) {
     result = `Помещение `;
@@ -24,9 +24,9 @@ function getCapacityText(rooms, guests) {
     result += `для ` + guests + ` гостей.`;
   }
   return result;
-}
+};
 
-function getCard(ad) {
+const getCard = (ad) => {
   let cardElement = cardTemplateElement.cloneNode(true);
   const photoElements = cardElement.querySelector(`.popup__photos`);
   const photoElement = photoElements.querySelector(`.popup__photo`);
@@ -64,38 +64,38 @@ function getCard(ad) {
     featureListElement.remove();
   }
 
-  popupClose.addEventListener(`click`, function () {
+  popupClose.addEventListener(`click`, () => {
     cardElement.remove();
     window.pin.disable();
   });
 
   return cardElement;
-}
+};
 
-function createCard(card) {
+const createCard = (card) => {
   removeCard();
   document.addEventListener(`keydown`, onEscCloseCard);
   mapElement.insertBefore(card, filtersContainerElement);
-}
+};
 
-function removeCard() {
+const removeCard = () => {
   const currentCard = document.querySelector(`.map__card`);
   if (currentCard) {
     currentCard.remove();
   }
-}
+};
 
-function closeCard() {
+const closeCard = () => {
   removeCard();
   document.removeEventListener(`keydown`, onEscCloseCard);
-}
+};
 
-function onEscCloseCard(evt) {
+const onEscCloseCard = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
     closeCard();
   }
-}
+};
 
 window.card = {
   get: getCard,

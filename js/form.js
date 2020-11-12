@@ -19,24 +19,24 @@ const roomValidityMessage = {
   100: `100 комнат — не для гостей`
 };
 
-function disableItems(items) {
+const disableItems = (items) => {
   items.forEach((item) => {
     item.setAttribute(`disabled`, true);
   });
-}
+};
 
-function enableItems(items) {
+const enableItems = (items) => {
   items.forEach((item) => {
     item.removeAttribute(`disabled`);
   });
-}
+};
 
-function checkMinPrice() {
+const checkMinPrice = () => {
   priceElement.setAttribute(`min`, window.util.offerTypes[typeFieldElement.value].minPrice);
   priceElement.setAttribute(`placeholder`, window.util.offerTypes[typeFieldElement.value].minPrice);
-}
+};
 
-function checkValidationCapacity() {
+const checkValidationCapacity = () => {
   const guests = +guestQuantityElement.value;
   const rooms = +roomQuantityElement.value;
   let result = true;
@@ -49,9 +49,9 @@ function checkValidationCapacity() {
   }
   guestQuantityElement.reportValidity();
   return result;
-}
+};
 
-function onCheckInAndCheckOutChange(evt) {
+const onCheckInAndCheckOutChange = (evt) => {
   const target = evt.target;
 
   if (target === checkInFieldElement) {
@@ -59,9 +59,9 @@ function onCheckInAndCheckOutChange(evt) {
   } else if (target === checkOutFieldElement) {
     checkInFieldElement.value = checkOutFieldElement.value;
   }
-}
+};
 
-function checkValidation() {
+const checkValidation = () => {
   checkMinPrice();
   typeFieldElement.addEventListener(`input`, checkMinPrice);
   checkValidationCapacity();
@@ -69,29 +69,29 @@ function checkValidation() {
   guestQuantityElement.addEventListener(`change`, checkValidationCapacity);
   checkInFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
   checkOutFieldElement.addEventListener(`change`, onCheckInAndCheckOutChange);
-}
+};
 
-function onSuccess() {
+const onSuccess = () => {
   advertFormElement.reset();
   filtersFormElement.reset();
   checkMinPrice();
   window.message.success();
   window.main.deactivatePage();
-}
+};
 
-function onError() {
+const onError = () => {
   window.message.error();
-}
+};
 
-function onFormSubmit(evt) {
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   window.server.upload(new FormData(advertFormElement), onSuccess, onError);
   window.scrollTo(0, 0);
-}
+};
 
 advertFormElement.addEventListener(`submit`, onFormSubmit);
 
-resetButtonElement.addEventListener(`click`, function () {
+resetButtonElement.addEventListener(`click`, () => {
   advertFormElement.reset();
   filtersFormElement.reset();
   checkValidation();
@@ -99,7 +99,7 @@ resetButtonElement.addEventListener(`click`, function () {
   window.scrollTo(0, 0);
 });
 
-function fillAddress(obj, height) {
+const fillAddress = (obj, height) => {
   let addressX = Math.floor(parseInt(obj.style.left, 10) + obj.clientWidth / 2);
   let addressY;
   if (advertFormElement.classList.contains(`ad-form--disabled`)) {
@@ -109,7 +109,7 @@ function fillAddress(obj, height) {
   }
 
   addressInputElement.value = `${addressX}, ${addressY}`;
-}
+};
 
 window.form = {
   filters: filtersFormElement,

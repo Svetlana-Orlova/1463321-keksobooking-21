@@ -6,6 +6,7 @@ module.exports = {
     "./js/server.js",
     "./js/debounce.js",
     "./js/message.js",
+    "./js/photo.js",
     "./js/map.js",
     "./js/mainPin.js",
     "./js/card.js",
